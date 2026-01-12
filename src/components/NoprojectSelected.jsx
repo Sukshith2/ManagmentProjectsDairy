@@ -11,7 +11,6 @@ const NoprojectSelected = ({onStartAddProject}) => {
         <p className='mt-8'>
          <Button onClick = {onStartAddProject}>create new projects</Button>
         </p>
-
     </div>
   )
 }

@@ -17,15 +17,34 @@ function App() {
           }
         })
       }
-let contnet;
-if(projectState.selectedProjectId === null){
 
-  contnet = <NewProject/>
-}else if(projectState.selectedProjectId === undefined){
-contnet=  <NoprojectSelected onStartAddProject={handleStartAddProject}/>
+function handleAddProject(projectData) {
+  setProjectState(prevState =>{
+
+    const newProjects = {
+      ...projectData,
+      id: Math.random()
+    };
+
+    return {
+      ...prevState,
+      projects : [...prevState.projects, newProjects]
+    }
+  })
 }
 
 
+
+
+
+
+
+let contnet;
+if(projectState.selectedProjectId === null){
+  contnet = <NewProject/>
+  } else if(projectState.selectedProjectId === undefined){
+    contnet=  <NoprojectSelected onStartAddProject={handleStartAddProject}/>
+  }
   return (
   <main className='h-screen my-8 flex gap-8' >
   <ProjectSideBar onStartAddProject={handleStartAddProject}/>
