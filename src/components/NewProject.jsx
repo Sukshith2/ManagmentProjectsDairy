@@ -1,35 +1,48 @@
 import { useRef } from "react";
 import Input from "./Input";
+import Modal from "./Modal";
 
-export default function NewProject(){
-
+export default function NewProject({onAdd, handleCancel}){
+const modalRef = useRef();
 const title =useRef();
 const description =useRef();
 const Dudedate =useRef();
 
-
-
-const onSaveProject = ()=>{
+function onSaveProject(){
     const enterTitle = title.current.value;
     const enterDescription = description.current.value;
     const enterDueDate = Dudedate.current.value;
+
+    if(enterTitle.trim() === '' || enterDescription.trim() === '' || enterDueDate.trim() === ''){
+        modalRef.current.open();
+        return;
+    }
+    onAdd({title:enterTitle, description:enterDescription, Dudedate:enterDueDate});
 }
 
 
     return (
+        <>
+        <Modal ref={modalRef} buttonClose="close">
+            <h2 className='text-xl font-bold text-stone-600 my-4 '>Invalid Input</h2>
+            <p className='text-stone-400 mb-4'>Opps... looks like you forget to enter a value</p>
+            <p className='text-stone-400 mb-4'>please make sure you provide a valid value for every input filed</p>
+        </Modal>
         <div className="w-[35rem] mt-12">
             <menu className="flex items-center justify-end gap-4 my-4">
                 <li className="flex gap-6">
-                    <button className="text-stone-800 hover:text-stone-950">Cancel</button>
-                    <button className=" px-4  py-2 rounded-md bg-stone-800 text-stone-50 hover:bg-stone-950" onClick={onSaveProject()}>Save</button>
+                    <button onClick={handleCancel} className="text-stone-800 hover:text-stone-950">Cancel</button>
+                    <button onClick={onSaveProject} className=" px-4  py-2 rounded-md bg-stone-800 text-stone-50 hover:bg-stone-950">Save</button>
                 </li>
             </menu>
 
             <div>
-               <Input ref={title} label="label"/>
-               <Input ref={description} label="Description" textarea/>
-               <Input ref={Dudedate} label="Due Date"/>
+               <Input type="text" ref={title} label="label"/>
+               <Input type="text" ref={description} label="Description" textarea/>
+               <Input type="date" ref={Dudedate} label="Due Date"/>
             </div>
         </div>
+        
+        </>
     )
 }
